@@ -6,6 +6,11 @@ stages:
   - build
   - test
 
+cache:
+  - core/vendor
+  - legacy/vendor
+  - python/vendor
+
 environment:
   stage: environment
   image: docker:latest
