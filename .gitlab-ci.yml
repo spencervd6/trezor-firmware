@@ -13,7 +13,7 @@ variables:
 
 cache:
   paths:
-    - ~/.local/share/virtualenvs/
+    - /root/.local/share/virtualenvs/
 
 stages:
   - environment
@@ -40,7 +40,7 @@ image: registry.corp.sldev.cz/trezor/trezor-firmware/environment
 
 before_script:
   - pipenv install
-  - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
+  - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
 
 build core firmware:
   stage: build
@@ -83,7 +83,7 @@ build legacy:
 test style:
   stage: test
   script:
-    - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
+    - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
     - pipenv run make style_check
     - cd core && pipenv run make templates_check  # TODO
 
