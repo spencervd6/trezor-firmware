@@ -41,6 +41,7 @@ image: registry.corp.sldev.cz/trezor/trezor-firmware/environment
 before_script:
   - pipenv install
   - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
+  - find "/root/.cache/pipenv/" -maxdepth 2 -type d -ls
 
 build core firmware:
   stage: build
