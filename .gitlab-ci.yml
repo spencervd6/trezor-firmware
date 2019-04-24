@@ -39,7 +39,6 @@ environment:
 image: registry.corp.sldev.cz/trezor/trezor-firmware/environment
 
 before_script:
-  - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
   - pipenv install
   - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
 
@@ -84,6 +83,7 @@ build legacy:
 test style:
   stage: test
   script:
+    - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
     - pipenv run make style_check
     - cd core && pipenv run make templates_check  # TODO
 
@@ -92,6 +92,7 @@ test core unix unit:
   dependencies:
     - build core unix
   script:
+    - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
     - cd core
     - pipenv run make test
 
