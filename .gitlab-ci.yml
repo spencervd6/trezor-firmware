@@ -11,9 +11,11 @@ variables:
   # run make paralel
   MAKEFLAGS: "-j10"
 
+  PIPENV_CACHE_DIR: "$CI_PROJECT_DIR/cache/"
+
 cache:
   paths:
-    - /root/.local/share/virtualenvs/
+    - "$CI_PROJECT_DIR/cache/"
 
 stages:
   - environment
@@ -40,8 +42,9 @@ image: registry.corp.sldev.cz/trezor/trezor-firmware/environment
 
 before_script:
   - pipenv install
-  - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
-  - find "/root/.cache/pipenv/" -maxdepth 2 -type d -ls
+  - find "$CI_PROJECT_DIR/cache/" -maxdepth 3 -type d -ls || true
+  - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls || true
+  - find "/root/.cache/pipenv/" -maxdepth 2 -type d -ls || true
 
 build core firmware:
   stage: build
@@ -84,7 +87,8 @@ build legacy:
 test style:
   stage: test
   script:
-    - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
+    - find "$CI_PROJECT_DIR/cache/" -maxdepth 3 -type d -ls || true
+    - find "/root/.local/share/virtualenvs/" -maxdepth 2 -type d -ls || true
     - pipenv run make style_check
     - cd core && pipenv run make templates_check  # TODO
 
@@ -93,7 +97,7 @@ test core unix unit:
   dependencies:
     - build core unix
   script:
-    - find "~/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
+    - find "$CI_PROJECT_DIR/cache/" -maxdepth 3 -type d -ls || true
     - cd core
     - pipenv run make test
 
