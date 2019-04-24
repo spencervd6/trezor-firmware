@@ -11,6 +11,10 @@ variables:
   # run make paralel
   MAKEFLAGS: "-j10"
 
+cache:
+  paths:
+    - "$CI_PROJECT_DIR/.local/share/virtualenvs/"
+
 stages:
   - environment
   - build
@@ -35,7 +39,9 @@ environment:
 image: registry.corp.sldev.cz/trezor/trezor-firmware/environment
 
 before_script:
+  - find "$CI_PROJECT_DIR/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
   - pipenv install
+  - find "$CI_PROJECT_DIR/.local/share/virtualenvs/" -maxdepth 2 -type d -ls
 
 build core firmware:
   stage: build
